@@ -41,7 +41,7 @@ public class StudentDatastore {
 
 	        if (entity != null) {
 //	        	entity.getProperties("name")
-	            String name = entity.getProperties(""));
+//	            String name = entity.);
 	            int age = entity.getInt("age");
 
 	            return new Student(id, name, age);
@@ -51,8 +51,9 @@ public class StudentDatastore {
 	    }
 	 
 	 public List<Student> getAllStudents() {
-	        Query<Entity> query = Query.newEntityQueryBuilder().setKind("Student").build();
-
+		 
+	        Query query = new  Query
+	        PreparedQuery  preparedQueryObj=datastoreService.prepare(query);
 	        List<Student> students = new ArrayList<>();
 
 	        QueryResultIterator<Entity> results = datastoreService.run(query);

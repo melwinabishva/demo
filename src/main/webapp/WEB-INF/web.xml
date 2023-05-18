@@ -15,6 +15,6 @@
   
   <servlet-mapping>
   <servlet-name>MyServlet</servlet-name>
-  <url-pattern>/api</url-pattern>
+  <url-pattern>/student-details</url-pattern>
   </servlet-mapping>
 </web-app>

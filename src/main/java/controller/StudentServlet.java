@@ -159,7 +159,7 @@ public class StudentServlet extends HttpServlet {
        studentDatastore.createStudent(id, name, age);
        resp.setStatus(HttpServletResponse.SC_OK);
        
-       resp.setStatus(HttpServletResponse.SC_CREATED);
+//       resp.setStatus(HttpServletResponse.SC_CREATED);
        resp.setContentType("text/plain");
        resp.getWriter().write("Student created successfully.");
 	
