@@ -62,7 +62,7 @@ public class StudentDatastore {
 	            String name = entity.getString("name");
 	            int age = entity.getLong("age");
 
-	            students.add(new Student(id, name, age))
+	            students.add(new Student(id, name, age)):
 	        }
 
 	        return students;
