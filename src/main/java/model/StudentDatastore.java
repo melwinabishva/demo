@@ -18,19 +18,22 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Transaction;
 
 public class StudentDatastore {
-
-	private DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+	private DatastoreService datastoreService;
+	
+	public StudentDatastore() {
+	 datastoreService = DatastoreServiceFactory.getDatastoreService();
+	}
 	
 	
 	 public void createStudent(int id, String name, int age) throws EntityNotFoundException {
 		 
 //		 System.out.println(id +""+name+""+age);
 //	        KeyFactory keyFactory = datastoreService.
-	        Key studentKey = KeyFactory.createKey("Student", id);
+//	        Key studentKey = KeyFactory.createKey("Student", id);
 //	        Key studentKey = new Entity("student",id);
 		 Transaction transaction=datastoreService.beginTransaction();
 	       try {
-	        Entity studentEntity = new Entity(studentKey);
+	        Entity studentEntity = new Entity("student",id);
 //	    	   Entity studentEntity=datastoreService.get(transaction, studentKey);
 	        studentEntity.setProperty("id", id);
 	        studentEntity.setProperty("name", name);
@@ -40,7 +43,7 @@ public class StudentDatastore {
 	        transaction.commit();
 	       }
 	       finally {
-	    	   if(transaction.isActive());
+	    	   if(transaction.isActive())
 	    	   transaction.rollback();
 	       }
 	        
@@ -49,14 +52,15 @@ public class StudentDatastore {
 		 Key studentKey = KeyFactory.createKey("Student", id);
 		 
 //	        Key key = datastoreService.newKeyFactory().setKind("Student").newKey(id);
-	        Entity entity = datastoreService.get(studentKey);
+		 Entity entity = datastoreService.get(studentKey);
 
 	        if (entity != null) {
 	        	
+	        	int id1=(int) entity.getProperty("id");
 	            String name = (String) entity.getProperty("name");
 	            int age = (int) entity.getProperty("age");
 
-	            return new Student(id, name, age);
+	            return new Student(id1, name, age);
 	        } else {
 	            return null;
 	        }
@@ -122,9 +126,9 @@ public class StudentDatastore {
 	       
 	        Key studentKey = KeyFactory.createKey("Student", id);
 	       
-	        Entity studentEntity;
+	      
 			try {
-				studentEntity = datastoreService.get(studentKey);
+				  Entity    studentEntity = datastoreService.get(studentKey);
 				if (studentEntity == null) {
 
 					res.setContentType("text/plain");

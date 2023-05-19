@@ -27,7 +27,7 @@ public class StudentService extends HttpServlet {
 	
 	
 	
-	public 	StudentDatastore studentDatastore=new StudentDatastore();
+	 public 	StudentDatastore studentDatastore=new StudentDatastore();
 	
 
 	@Override
@@ -164,8 +164,7 @@ public class StudentService extends HttpServlet {
        try {
 		studentDatastore.createStudent(id, name, age);
 	} catch (EntityNotFoundException e) {
-		// TODO Auto-generated catch block
-		System.out.println("jfhkjfk");
+		
 		
 		e.printStackTrace();
 	}
