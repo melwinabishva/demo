@@ -25,13 +25,8 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/user/Downloads/appengine-api-1.0-sdk-2.0.14.jar" sourcepath="/Users/user/Downloads/appengine-api-1.0-sdk-2.0.14.jar"/>
-	<classpathentry kind="lib" path="/Users/user/Downloads/google-cloud-datastore-2.14.6.jar" sourcepath="/Users/user/Downloads/google-cloud-datastore-2.14.6.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="/Users/user/Downloads/guava-31.1-jre.jar"/>
-	<classpathentry kind="lib" path="/Users/user/Downloads/google-api-client-2.2.0.jar"/>
+	<classpathentry kind="lib" path="/Users/user/Downloads/google-api-client-appengine-2.0.0.jar"/>
+	<classpathentry kind="lib" path="/Users/user/Downloads/app engine/appengine-api-1.0-sdk-2.0.14.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

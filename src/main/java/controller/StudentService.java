@@ -2,7 +2,7 @@ package controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,26 +11,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.repackaged.com.google.datastore.v1.client.Datastore;
-import com.google.appengine.repackaged.com.google.datastore.v1.client.DatastoreOptions;
-import com.google.appengine.repackaged.com.google.gson.JsonIOException;
-import com.google.appengine.repackaged.com.google.gson.JsonSyntaxException;
-import com.google.cloud.datastore.DatastoreOptions.DefaultDatastoreFactory;
-import com.google.cloud.datastore.Key;
-import com.google.cloud.datastore.KeyFactory;
-import com.google.cloud.datastore.QueryResults;
+
+import com.google.appengine.api.datastore.EntityNotFoundException;
+
 import com.google.gson.Gson;
 
 import model.Student;
 import model.StudentDatastore;
 
-
-
-public class StudentServlet extends HttpServlet {
+@WebServlet(
+	    name = "StudentServlet",
+	    urlPatterns = {"/students-datas"}
+	)
+public class StudentService extends HttpServlet {
 	
 	
 	
@@ -49,16 +42,23 @@ public class StudentServlet extends HttpServlet {
 			String idStr=pathParts[1];
 			int id=Integer.parseInt(idStr);
 			
-			Student student = studentDatastore.getStudentById(id);
-			if (student != null) {
-                Gson gson = new Gson();
-                String responseData = gson.toJson(student);
+			Student student;
+			try {
+				student = studentDatastore.getStudentById(id);
+				if (student != null) {
+	                Gson gson = new Gson();
+	                String responseData = gson.toJson(student);
 
-                resp.setContentType("application/json");
-                resp.getWriter().write(responseData);
-            } else {
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Student not found");
-            }
+	                resp.setContentType("application/json");
+	                resp.getWriter().write(responseData);
+	            } else {
+	                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Student not found");
+	            }
+			} catch (EntityNotFoundException e) {
+				
+				e.printStackTrace();
+			}
+			
         } else {
             // If no ID is provided, retrieve all students
             List<Student> students = studentDatastore.getAllStudents();
@@ -90,11 +90,16 @@ public class StudentServlet extends HttpServlet {
 		String name = newStudent.getName();
 		int age = newStudent.getAge();
 		int id=newStudent.getId();
+		
+		System.out.println(id +""+name+""+age);
 		studentDatastore.createStudent(id, name, age);
 		
 		String successMessage = "Successfully created student: id=" + id + ", name=" + name + ", age=" + age;
             
 		//this is response status and content type
+		 
+        
+		
 		 resp.setStatus(HttpServletResponse.SC_CREATED);
          resp.setContentType("text/plain");
          
@@ -156,12 +161,19 @@ public class StudentServlet extends HttpServlet {
 		int age = newStudent.getAge();
 
 	   
-       studentDatastore.createStudent(id, name, age);
+       try {
+		studentDatastore.createStudent(id, name, age);
+	} catch (EntityNotFoundException e) {
+		// TODO Auto-generated catch block
+		System.out.println("jfhkjfk");
+		
+		e.printStackTrace();
+	}
        resp.setStatus(HttpServletResponse.SC_OK);
        
 //       resp.setStatus(HttpServletResponse.SC_CREATED);
-       resp.setContentType("text/plain");
-       resp.getWriter().write("Student created successfully.");
+//       resp.setContentType("text/plain");
+//       resp.getWriter().write("Student created successfully.");
 	
 	}
 
@@ -171,6 +183,8 @@ public class StudentServlet extends HttpServlet {
 		int id = Integer.parseInt(req.getPathInfo().substring(1));
 
 		studentDatastore.deleteStudent(id, resp);
+		
+		resp.setStatus(HttpServletResponse.SC_GONE);
 		
 
 		
