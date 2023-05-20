@@ -16,6 +16,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Transaction;
+import com.google.appengine.repackaged.org.apache.http.client.entity.EntityBuilder;
 
 public class StudentDatastore {
 	private DatastoreService datastoreService;
@@ -25,15 +26,15 @@ public class StudentDatastore {
 	}
 	
 	
-	 public void createStudent(int id, String name, int age) throws EntityNotFoundException {
+	 public void createStudent(int id, String name, int age)  {
 		 
 //		 System.out.println(id +""+name+""+age);
 //	        KeyFactory keyFactory = datastoreService.
 //	        Key studentKey = KeyFactory.createKey("Student", id);
 //	        Key studentKey = new Entity("student",id);
 		 Transaction transaction=datastoreService.beginTransaction();
-	       try {
-	        Entity studentEntity = new Entity("student",id);
+	       
+	        Entity studentEntity =new Entity("student",id);
 //	    	   Entity studentEntity=datastoreService.get(transaction, studentKey);
 	        studentEntity.setProperty("id", id);
 	        studentEntity.setProperty("name", name);
@@ -41,11 +42,11 @@ public class StudentDatastore {
 
 	        datastoreService.put(studentEntity);
 	        transaction.commit();
-	       }
-	       finally {
-	    	   if(transaction.isActive())
-	    	   transaction.rollback();
-	       }
+	       
+//	       finally {
+//	    	   if(transaction.isActive())
+//	    	   transaction.rollback();
+//	       }
 	        
 	    }
 	 public Student getStudentById(int id) throws EntityNotFoundException {
